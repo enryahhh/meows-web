@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,8 @@ class AuthController extends Controller
                 'password' => bcrypt($request['password']),
                 'email' => $request['email']
             ]);
+
+            event(new Registered($user));
 
             return $this->success([
                 'token' => $user->createToken('API Token')->plainTextToken

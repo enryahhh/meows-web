@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +19,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::get('/success-verify',function(){
+    return view('success-verify');
+});
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
