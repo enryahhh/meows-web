@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\API\CommentController;
 use App\Models\User;
 
 /*
@@ -25,16 +27,25 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return auth()->user();
     });
 
+    Route::get('/post/mypost', [PostController::class, 'myPost']);
+    Route::get('/article', [PostController::class, 'indexArticle']);
+    Route::apiResources([
+        'post' => PostController::class,
+    ]);
+
+    Route::get('post/{id}/comments',[CommentController::class,'getComment']);
+    Route::post('post/{id}/comment',[CommentController::class,'createComment']);
     
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
 
-        return response()->json(["msg" => "Email verification link sent on your email id"]);
+        return response()->json(["message" => "Email verification link sent on your email id"]);
     })->middleware(['throttle:6,1'])->name('verification.send');
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
 
+// kalo berhasil verifikasi
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::find($request->route('id'));
 
@@ -49,6 +60,10 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
 
     return redirect('/success-verify');
 })->name('verification.verify');
+
+Route::get('/email/verify', function () {
+        return response()->json(["msg" => "Email hasn't been verified"]);
+    })->name('verification.notice');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

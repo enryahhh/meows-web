@@ -11,7 +11,6 @@
             <div class="section-header-breadcrumb">
             </div>
           </div>
-
           <div class="section-body">
             @yield('content-admin')
           </div>

@@ -1,0 +1,44 @@
+#user-main{
+	max-width: 100%;
+}
+
+.main-container{
+	/*background-color: #FFA910;*/
+	background-color: #FFFFFF;
+	max-width: 600px;
+	min-height: 100%;
+}
+
+.btn-login{
+	color: white;
+	font-size: 20px;
+	background-color: #FFA910 !important;
+	border-radius: 15px;
+	font-weight: bold;
+}
+
+.btn-register{
+	font-size: 20px;
+	font-weight: bold;
+	color: #FFA910;
+}
+
+.btn-register:hover{
+	text-decoration: none;
+	color: #FFA910;
+}
+
+.text-login{
+	margin: 5rem 0;
+	font-weight: bold;
+	color: #FFA910;
+}
+
+nav.navbar {
+  
+  width: inherit;
+  /*top: 0%;*/
+  /*bottom: 0;*/
+  left: 50%;
+  transform: translateX(-50%);
+}

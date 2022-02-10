@@ -16,23 +16,24 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validate = \Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
+            'name' => 'bail|required|string|max:255',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed'
         ]);
          if ($validate->fails()) {
-            return $this->error($validate->errors(),200);
+            return $this->error($validate->errors(),401);
         }
 
             $user = User::create([
                 'name' => $request['name'],
                 'password' => bcrypt($request['password']),
-                'email' => $request['email']
+                'email' => $request['email'],
+                'role' => 'user'
             ]);
 
-            event(new Registered($user));
-
+            // event(new Registered($user));
             return $this->success([
+                'user' => $user->only(['id', 'name','email_verified_at']),
                 'token' => $user->createToken('API Token')->plainTextToken
             ]);
         
@@ -46,10 +47,11 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($attr)) {
-            return $this->error('Credentials not match', 401);
+            return $this->error('Email atau password anda salah!', 401);
         }
 
         return $this->success([
+            'user' => auth()->user()->only(['id', 'name','email_verified_at']),
             'token' => auth()->user()->createToken('API Token')->plainTextToken
         ]);
     }
