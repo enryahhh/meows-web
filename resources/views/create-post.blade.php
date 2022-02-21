@@ -15,6 +15,11 @@
 							</div>
 
 							<div class="form-group">
+								<label for="">Thumbnail</label>
+								<input type="file" name="thumbnail" class="form-control">
+							</div>
+
+							<div class="form-group">
 								<label for="">Konten</label>
 								<textarea name="content"></textarea>
 							</div>

@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed'
         ]);
          if ($validate->fails()) {
-            return $this->error($validate->errors(),401);
+            return $this->error($validate->errors()->first('email'),401);
         }
 
             $user = User::create([

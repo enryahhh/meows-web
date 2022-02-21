@@ -18,6 +18,7 @@ class Post extends Model
         'title',
         'content',
         'user_id',
+        'thumbnail',
         'total_comments',
         'total_likes',
         'category_id'

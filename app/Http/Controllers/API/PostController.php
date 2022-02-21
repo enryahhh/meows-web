@@ -41,6 +41,18 @@ class PostController extends Controller
 
     }
 
+
+    public function searchArticle(Request $request){
+        $post = \DB::table('post')
+            ->where('thumbnail' ,'!=', null)
+            ->where('title', 'like', "%".$request->keyword."%")
+            ->get();
+
+        return $this->success([
+            "post" => $post
+        ]);        
+    }
+
     /**
      * Show the form for creating a new resource.
      *

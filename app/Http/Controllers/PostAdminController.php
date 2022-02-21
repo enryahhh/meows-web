@@ -14,7 +14,11 @@ class PostAdminController extends Controller
      */
     public function index()
     {
-        //
+        $posts = \DB::table('post')
+            ->join('users', 'users.id', '=', 'post.user_id')
+            ->select('users.name', 'post.*')
+            ->get();
+        return view('list-post',compact('posts'));
     }
 
     /**
@@ -35,17 +39,24 @@ class PostAdminController extends Controller
      */
     public function store(Request $request)
     {
-        $htmlDom = new \DOMDocument;
-        $htmlDom->loadHTML($request->content);
-        $imageTags = $htmlDom->getElementsByTagName('img');
+        // $htmlDom = new \DOMDocument;
+        // $htmlDom->loadHTML($request->content);
+        // $imageTags = $htmlDom->getElementsByTagName('img');
         // dd($imageTags[0]->getAttribute('src'));
-        $file_name = basename($imageTags[0]->getAttribute('src'));
+        // $file_name = basename($imageTags[0]->getAttribute('src'));
+         $request->validate([
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+    
+        $imageName = time().'.'.$request->thumbnail->extension();  
+        $request->thumbnail->move(public_path('storage'), $imageName);
+
         $post = Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'user_id' => auth()->user()->id,
+            'thumbnail' => $imageName,
             'total_comments' => 0,
-            'total_likes' => 0,
             'category_id' => 1
         ]);
 

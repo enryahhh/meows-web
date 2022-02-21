@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\CatController;
 use App\Models\User;
 
 /*
@@ -29,8 +30,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/post/mypost', [PostController::class, 'myPost']);
     Route::get('/article', [PostController::class, 'indexArticle']);
+    Route::get('/article/search',[PostController::class, 'searchArticle']);
     Route::apiResources([
         'post' => PostController::class,
+        'cat' => CatController::class,
     ]);
 
     Route::get('post/{id}/comments',[CommentController::class,'getComment']);
